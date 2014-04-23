@@ -19,6 +19,8 @@ endif
 " enable syntax highlighting
 syntax enable
 
+hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
 set backspace=2                                              " Fix broken backspace in some setups
@@ -35,16 +37,17 @@ set listchars=tab:▸\ ,trail:▫
 set number                                                   " show line numbers
 set ruler                                                    " show where you are
 set scrolloff=3                                              " show context above/below cursorline
-set shiftwidth=4                                             " normal mode indentation commands use 2 spaces
+set shiftwidth=4                                             " normal mode indentation commands use 4 spaces
 set showcmd
 set smartcase                                                " case-sensitive search if any caps
-set softtabstop=4                                            " insert mode tab and backspace use 2 spaces
+set softtabstop=4                                            " insert mode tab and backspace use 4 spaces
 set tabstop=8                                                " actual tabs occupy 8 characters
-set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
+set wildignore=log/**,node_modules/**,tmp/**
 set wildmenu                                                 " show a navigable menu for tab completion
 set wildmode=longest,list,full
 set si
 set ai
+set hlsearch                                                 " highlight all matches
 
 " Enable basic mouse behavior such as resizing buffers.
 set mouse=a
@@ -59,21 +62,20 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 map <leader>l :Align
+map <leader><leader> <C-^>
 nmap <leader>a :Ack<space>
-nmap <leader>b :CtrlPBuffer<CR>
-nmap <leader>d :NERDTreeToggle<CR>
 nmap <leader>f :NERDTreeFind<CR>
-nmap <leader>t :CtrlP<CR>
-nmap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
+nmap <leader>t :tab split<CR><c-p>
 nmap <leader>] :TagbarToggle<CR>
-nmap <leader><space> :call <SID>StripTrailingWhitespaces()<CR>
-nmap <leader>g :GitGutterToggle<CR>
-nmap <leader>c <Plug>Kwbd
+nmap <leader>gs :Gstatus<CR>
+nmap <leader>gt :GitGutterToggle<CR>
+nmap <leader>gl :GitGutterLineHighlightsToggle<CR>
 nmap <leader>n <plug>NERDTreeTabsToggle<CR>
-map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-vmap <C-x> :!pbcopy<CR>
-vmap <C-c> :w !pbcopy<CR><CR>
-map <leader>r :NERDTreeFind<cr>
+nmap <leader>mn :nohlsearch<cr>
+
+" Shift-nav to navigate paragraphs
+nmap <s-j> <s-}>
+nmap <s-k> <s-{>
 
 " Allow wrap breaking navigation
 map j gj
@@ -86,10 +88,18 @@ map 0 ^
 inoremap jk <ESC>
 inoremap kj <ESC>
 
+" Better tabpage navigation
+nmap <leader>1 1gt
+nmap <leader>2 2gt
+nmap <leader>3 3gt
+nmap <leader>4 4gt
+
 " plugin settings
 let g:ctrlp_match_window = 'order:ttb,max:20'
+let g:ctrlp_clear_cache_on_exit=1
 let g:NERDSpaceDelims=1
-let g:gitgutter_enabled = 0
+let g:gitgutter_enabled=1
+let g:gitgutter_line_highlights=1
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
@@ -102,23 +112,13 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" fdoc is yaml
-autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
 " md is markdown
 autocmd BufRead,BufNewFile *.md set filetype=markdown
-" extra rails.vim help
-autocmd User Rails silent! Rnavcommand decorator      app/decorators            -glob=**/* -suffix=_decorator.rb
-autocmd User Rails silent! Rnavcommand observer       app/observers             -glob=**/* -suffix=_observer.rb
-autocmd User Rails silent! Rnavcommand feature        features                  -glob=**/* -suffix=.feature
-autocmd User Rails silent! Rnavcommand job            app/jobs                  -glob=**/* -suffix=_job.rb
-autocmd User Rails silent! Rnavcommand mediator       app/mediators             -glob=**/* -suffix=_mediator.rb
-autocmd User Rails silent! Rnavcommand stepdefinition features/step_definitions -glob=**/* -suffix=_steps.rb
+" ejs is html and js combination
+au BufNewFile,BufRead *.ejs setfiletype html.js
+
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
-
-" Set various file types to PHP (Drupal specific)
-au BufReadPost *.install set syntax=php
-au BufReadPost *.module set syntax=php
 
 " Fix Cursor in TMUX
 if exists('$TMUX')
@@ -129,17 +129,7 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-" Go crazy!
 if filereadable(expand("~/.vimrc.local"))
-  " In your .vimrc.local, you might like:
-  "
-  " set autowrite
-  " set nocursorline
-  " set nowritebackup
-  " set whichwrap+=<,>,h,l,[,] " Wrap arrow keys between lines
-  "
-  " autocmd! bufwritepost .vimrc source ~/.vimrc
-  " noremap! jj <ESC>
   source ~/.vimrc.local
 endif
 
@@ -159,11 +149,12 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'Lokaltog/vim-distinguished'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'Raimondi/delimitMate'
+Bundle 'statianzo/vim-jade'
+Bundle 'the-nerd-commenter'
+Bundle 'flazz/vim-colorschemes'
+Bundle 'airblade/vim-gitgutter'
 let delimitMate_expand_cr=1
-
-" Custom filetypes
-au BufNewFile,BufRead *.ejs setfiletype html.js
-
+"
 " Colours
 set t_Co=256
 set bg=dark
