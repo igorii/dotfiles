@@ -70,6 +70,9 @@ nmap <leader>] :TagbarToggle<CR>
 nmap <leader>gs :Gstatus<CR>
 nmap <leader>gt :GitGutterToggle<CR>
 nmap <leader>gl :GitGutterLineHighlightsToggle<CR>
+nmap <leader>gc :Gcommit -a<CR>
+nmap <leader>gb :Gblame<CR>
+nmap <laeder>gd :Gdiff<CR>
 nmap <leader>n <plug>NERDTreeTabsToggle<CR>
 nmap <leader>mn :nohlsearch<cr>
 
