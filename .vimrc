@@ -1,25 +1,30 @@
-" don't bother with vi compatibility
+" Don't bother with vi compatibility
 set nocompatible
 
-let g:nerdtree_tabs_open_on_console_startup=1
-
-" configure Vundle
+" Configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
 filetype plugin indent on
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" install Vundle bundles
+" Install Vundle bundles
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
   source ~/.vimrc.bundles.local
 endif
 
-" enable syntax highlighting
-syntax enable
+" Plugin settings
+let g:ctrlp_match_window = 'order:ttb,max:10'
+let g:ctrlp_clear_cache_on_exit=1
+let g:NERDSpaceDelims=1
+let g:gitgutter_enabled=1
+let g:gitgutter_line_highlights=1
+let g:nerdtree_tabs_open_on_console_startup=1
+let delimitMate_expand_cr=1
 
-hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+" Enable syntax highlighting
+syntax enable
 
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
@@ -67,14 +72,16 @@ nmap <leader>a :Ack<space>
 nmap <leader>f :NERDTreeFind<CR>
 nmap <leader>t :tab split<CR><c-p>
 nmap <leader>] :TagbarToggle<CR>
+nmap <leader>n <plug>NERDTreeTabsToggle<CR>
+nmap <leader>mn :nohlsearch<cr>
+
+" Git bindings
 nmap <leader>gs :Gstatus<CR>
 nmap <leader>gt :GitGutterToggle<CR>
 nmap <leader>gl :GitGutterLineHighlightsToggle<CR>
 nmap <leader>gc :Gcommit -a<CR>
 nmap <leader>gb :Gblame<CR>
-nmap <laeder>gd :Gdiff<CR>
-nmap <leader>n <plug>NERDTreeTabsToggle<CR>
-nmap <leader>mn :nohlsearch<cr>
+nmap <leader>gd :Gdiff<CR>
 
 " Shift-nav to navigate paragraphs
 nmap <s-j> <s-}>
@@ -96,13 +103,6 @@ nmap <leader>1 1gt
 nmap <leader>2 2gt
 nmap <leader>3 3gt
 nmap <leader>4 4gt
-
-" plugin settings
-let g:ctrlp_match_window = 'order:ttb,max:20'
-let g:ctrlp_clear_cache_on_exit=1
-let g:NERDSpaceDelims=1
-let g:gitgutter_enabled=1
-let g:gitgutter_line_highlights=1
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
@@ -132,10 +132,6 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
-endif
-
 " Strip trailing whitespace on save
 fun! <SID>StripTrailingWhitespaces()
   let l = line(".")
@@ -145,19 +141,6 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
-" Bundles
-Bundle 'neocomplcache'
-Bundle 'autocomplpop'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'Lokaltog/vim-distinguished'
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'Raimondi/delimitMate'
-Bundle 'statianzo/vim-jade'
-Bundle 'the-nerd-commenter'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'airblade/vim-gitgutter'
-let delimitMate_expand_cr=1
-"
 " Colours
 set t_Co=256
 set bg=dark

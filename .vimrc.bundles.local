@@ -1,1 +1,11 @@
-Bundle 'jistr/vim-nerdtree-tabs'
+" Local bundles
+Bundle 'neocomplcache'
+Bundle 'autocomplpop'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'Lokaltog/vim-distinguished'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'Raimondi/delimitMate'
+Bundle 'statianzo/vim-jade'
+Bundle 'the-nerd-commenter'
+Bundle 'flazz/vim-colorschemes'
+Bundle 'airblade/vim-gitgutter'
