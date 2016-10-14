@@ -4,15 +4,17 @@ set nocompatible
 " Configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
-filetype plugin indent on
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#begin()
 
 " Install Vundle bundles
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
   source ~/.vimrc.bundles.local
 endif
+
+call vundle#end()
+filetype plugin indent on
 
 " Plugin settings
 let g:ctrlp_match_window = 'order:ttb,max:10'
@@ -82,6 +84,10 @@ nmap <leader>gl :GitGutterLineHighlightsToggle<CR>
 nmap <leader>gc :Gcommit -a<CR>
 nmap <leader>gb :Gblame<CR>
 nmap <leader>gd :Gdiff<CR>
+nmap <leader>q :!q %<CR>
+
+nmap <leader>c :!~/shipit.sh .<CR>
+nmap <leader>] :TagbarToggle<CR>
 
 " Shift-nav to navigate paragraphs
 nmap <s-j> <s-}>
@@ -144,4 +150,19 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 " Colours
 set t_Co=256
 set bg=dark
-colorscheme distinguished
+set cc=80
+colorscheme beauty256
+
+Plugin 'iamcco/markdown-preview.vim'
+Plugin 'Tabular'
+Plugin 'rhysd/nyaovim-markdown-preview'
+Plugin 'rizzatti/dash.vim'
+Plugin 'Ack.vim'
+Plugin 'craigemery/vim-autotag'
+Plugin 'derekwyatt/vim-scala'
+
+"set transparency=15
+"set guioptions-=r
+"set guioptions-=L
+" Ignore case in ctrlp
+set ignorecase
